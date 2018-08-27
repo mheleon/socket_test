@@ -22,22 +22,21 @@ io.on('connect', (socket) => {
     socket.items = items;
     clients[socket.id] = socket;
   });
-
-  // Event: send items
-  setInterval(() => {
-    for (socketKey in clients) {
-      const d = new Date();
-      clients[socketKey].emit('itemsData', { for: clients[socketKey].id, seg: d.getSeconds(), 'msg#': i });
-    };
-    i++;
-  }, 5000);
-
-  // Event: broadcast
-  setInterval(() => {
-    io.sockets.emit('broadcast', 'This is a broadcast message!');
-  }, 30000);
-
 });
+
+// Event: send items
+setInterval(() => {
+  for (socketKey in clients) {
+    const d = new Date();
+    clients[socketKey].emit('itemsData', { for: clients[socketKey].id, seg: d.getSeconds(), 'msg#': i, items: clients[socketKey].items });
+  };
+  i++;
+}, 5000);
+
+// Event: broadcast
+setInterval(() => {
+  io.sockets.emit('broadcast', 'This is a broadcast message!');
+}, 30000);
 
 http.listen(3000, () => {
   console.log('listening on *:3000');

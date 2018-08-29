@@ -26,6 +26,19 @@ io.on('connect', (socket) => {
     socket.items = items;
     clients[socket.id] = socket;
   });
+
+  // Modify list of items of the client
+  socket.on('modifyItemsRequested', (itemsMod) => {
+    for (item in itemsMod) {
+      const index = clients[socket.id].items.indexOf(itemsMod[item]);
+      if (index > -1) {
+        clients[socket.id].items.splice(index, 1);
+      } else {
+        clients[socket.id].items.push(itemsMod[item]);
+      }
+    }
+    console.log('Client', socket.id, 'modifies items requested:', clients[socket.id].items);
+  });
 });
 
 // Event: send items

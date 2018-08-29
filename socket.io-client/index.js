@@ -30,11 +30,14 @@ socket.on('notification', (data) => {
 let trigger = true;
 setInterval(() => {
   if (trigger) {
+    // Modify all items requested
     socket.emit('itemsData', ["D", "E"]);
+    // Modify just some items requested
+    socket.emit('modifyItemsRequested', ["A", "E"]);
     trigger = false;
   } else {
+    // Modify all items requested
     socket.emit('itemsData', ["A", "B", "C"]);
     trigger = true;
   }
 }, 11000);
-

@@ -1,4 +1,5 @@
-//server.js
+/* eslint-disable no-console */
+
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
@@ -6,8 +7,6 @@ const io = require('socket.io')(http);
 const cache = require('./cache.json');
 
 const DELAY = 5000;
-
-let i = 0;
 
 const clients = {};
 
@@ -29,29 +28,28 @@ io.on('connect', (socket) => {
 
   // Modify list of items of the client
   socket.on('modifyItemsRequested', (itemsMod) => {
-    for (item in itemsMod) {
+    itemsMod.forEach((item) => {
       const index = clients[socket.id].items.indexOf(itemsMod[item]);
       if (index > -1) {
         clients[socket.id].items.splice(index, 1);
       } else {
         clients[socket.id].items.push(itemsMod[item]);
       }
-    }
+    });
     console.log('Client', socket.id, 'modifies items requested:', clients[socket.id].items);
   });
 });
 
 // Event: send items
 setInterval(() => {
-  for (socketKey in clients) {
+  for (const socketKey in clients) {
     const socket = clients[socketKey];
-    let data = {};
-    for (key in socket.items) {
+    const data = {};
+    for (const key in socket.items) {
       data[socket.items[key]] = (cache[socket.items[key]]);
     }
-    socket.emit('itemsData', { for: socket.id, 'msg#': i, itemsData: data });
-  };
-  i++;
+    socket.emit('itemsData', { for: socket.id, itemsData: data });
+  }
 }, DELAY);
 
 // Event: broadcast

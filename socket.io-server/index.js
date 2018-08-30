@@ -1,14 +1,22 @@
 /* eslint-disable no-console */
 
+const express = require('express');
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
+
+const router = express.Router();
 const cache = require('./cache.json');
 
 const DELAY = 5000;
-
 const clients = {};
+
+router.get('/', (req, res) => {
+  res.json({ message: 'fuck them all!' });
+});
+
+app.use('/', router);
 
 io.on('connect', (socket) => {
   console.log('New client connected in socket', socket.id);

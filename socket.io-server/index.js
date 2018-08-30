@@ -42,14 +42,14 @@ io.on('connect', (socket) => {
 
 // Event: send items
 setInterval(() => {
-  for (const socketKey in clients) {
+  Object.keys(clients).forEach((socketKey) => {
     const socket = clients[socketKey];
     const data = {};
-    for (const key in socket.items) {
+    Object.keys(socket.items).forEach((key) => {
       data[socket.items[key]] = (cache[socket.items[key]]);
-    }
+    });
     socket.emit('itemsData', { for: socket.id, itemsData: data });
-  }
+  });
 }, DELAY);
 
 // Event: broadcast

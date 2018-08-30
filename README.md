@@ -24,3 +24,6 @@ npm run start:dev
 cd socket.io-server
 ITEMS_REQUESTED='[A, B, C]' node .
 ```
+
+More information
+**socket.io:** https://socket.io/

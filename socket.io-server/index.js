@@ -13,7 +13,7 @@ const DELAY = 5000;
 const clients = {};
 
 router.get('/', (req, res) => {
-  res.json({ message: 'fuck them all!' });
+  res.json({ message: 'Hello!' });
 });
 
 app.use('/', router);
